@@ -13,8 +13,8 @@ export CUDA_VISIBLE_DEVICES=$actual_gid
 python $WEST_SIM_ROOT/common_files/memb_prod.py
 
 #Calculate pcoord with MDTraj
-python $WEST_SIM_ROOT/common_files/get_distance.py dist.dat seg.h5
-cat dist.dat > $WEST_PCOORD_RETURN
+python $WEST_SIM_ROOT/common_files/get_RMSD.py RMSD.dat seg.h5
+cat RMSD.dat > $WEST_PCOORD_RETURN
 
 # cp bstate.pdb $WEST_TRAJECTORY_RETURN
 cp seg.h5 $WEST_TRAJECTORY_RETURN
