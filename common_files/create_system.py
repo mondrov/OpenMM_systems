@@ -1,28 +1,35 @@
-from openmm import app, XmlSerializer, MonteCarloMembraneBarostat
+from openmm import app, XmlSerializer
 from openmm.unit import kelvin, bar, nanometer
 from openmmforcefields.generators import SystemGenerator
 from openff.toolkit.topology import Molecule
 
+# Load the PDB file
+pdb = app.PDBFile('chignolin.pdb')
 
-pdb = app.PDBFile('bstate.pdb')
-molecule = Molecule.from_smiles('CCCCO')
-
+# Define the forcefield parameters
 forcefield_kwargs = {'constraints': app.HBonds,
                      'removeCMMotion': False}
-periodic_forcefield_kwargs = {'nonbondedMethod': app.LJPME,
-                              'nonbondedCutoff': 1*nanometer}
-membrane_barostat = MonteCarloMembraneBarostat(1*bar, 0.0*bar*nanometer, 308*kelvin,
-                                               MonteCarloMembraneBarostat.XYIsotropic,
-                                               MonteCarloMembraneBarostat.ZFree,
-                                               15)
-system_generator = SystemGenerator(forcefields=['amber/lipid17.xml', 'amber/tip3p_standard.xml'],
-                                   small_molecule_forcefield='gaff-2.11',
-                                   barostat=membrane_barostat,
-                                   forcefield_kwargs=forcefield_kwargs,
-                                   periodic_forcefield_kwargs=periodic_forcefield_kwargs)
 
-system = system_generator.create_system(pdb.topology, molecules=molecule)
+# Create the GBSAOBCForce
+gb_force = openmm.GBSAOBCForce()
+gb_force.setNonbondedMethod(openmm.GBSAOBCForce.HCT)
+gb_force.setSolventDielectric(1.0)
+gb_force.setSoluteDielectric(1.0)
+
+# Create the SystemGenerator
+system_generator = SystemGenerator(forcefields=['amber14/protein.ff14SB.xml', 'amber14/tip3p.xml'],
+                                   forcefield_kwargs=forcefield_kwargs)
+
+# Create the OpenMM System
+system = system_generator.create_system(pdb.topology)
+
+# Add the GBSAOBCForce to the System
+system.addForce(gb_force)
+
+# Serialize the System to XML
 omm_sys_serialized = XmlSerializer.serialize(system)
 
+# Save the serialized System to a file
 with open('system.xml', 'wt') as f:
     f.write(omm_sys_serialized)
+
