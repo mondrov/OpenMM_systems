@@ -1,20 +1,19 @@
 import mdtraj as md
-from sys import argv
+import numpy as np
 
-def compute_rmsd(traj, ref=None):
-    if ref is None:
-        ref = traj[0]
-    return md.rmsd(traj, ref)
+def compute_rmsd(traj, ref):
+    ca_indices = traj.topology.select('name CA')
+    rmsd = md.rmsd(traj, ref, atom_indices=ca_indices)
+    return rmsd
 
 if __name__ == "__main__":
+    from sys import argv
     outfile = argv[1]
     trajfile = argv[2]
-    topfile = argv[3] if len(argv) > 3 else None
+    reffile = argv[3]
 
-    if topfile:
-        traj = md.load(trajfile, top=topfile)
-    else:
-        traj = md.load(trajfile)
-
-    rmsds = compute_rmsd(traj)
+    traj = md.load(trajfile)
+    ref = md.load(reffile)
+    rmsds = compute_rmsd(traj, ref)
     np.savetxt(outfile, rmsds)
+
