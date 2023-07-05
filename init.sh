@@ -2,6 +2,7 @@
 
 # Set up simulation environment
 source env.sh
+source generate_bstate.sh
 
 # Clean up from previous/ failed runs
 rm -rf traj_segs seg_logs istates west.h5 
