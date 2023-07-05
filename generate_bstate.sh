@@ -11,9 +11,6 @@ system = prmtop.createSystem(nonbondedMethod=app.NoCutoff, constraints=app.HBond
 # Load the PDB file
 pdb = app.PDBFile('chignolin_b.pdb')
 
-# Set the positions from the PDB file
-positions = pdb.getPositions(asNumpy=True)
-
 # Create the OpenMM Simulation with the positions
 integrator = LangevinMiddleIntegrator(275*kelvin,5/picosecond,.002*picoseconds)
 simulation = Simulation(pdb.topology,system,integrator)
