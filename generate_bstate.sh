@@ -3,7 +3,7 @@ from openmm.unit import kelvin
 import os
 
 # Load the Amber files
-prmtop = app.AmberPrmtopFile('chignolin.prmtop')
+prmtop = app.AmberPrmtopFile('common_files/chignolin.prmtop')
 
 # Create the OpenMM System
 system = prmtop.createSystem(nonbondedMethod=app.NoCutoff, constraints=app.HBonds, implicitSolvent=app.HCT)
