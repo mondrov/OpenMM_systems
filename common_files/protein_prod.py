@@ -17,7 +17,7 @@ with open('system.xml', 'rt') as f:
 
 system = system = XmlSerializer.deserialize(xml_str)
 pdb = PDBFile('bstate.pdb')
-integrator = LangevinIntegrator(300*kelvin, 1/picosecond, 0.002*picosecond)
+integrator = LangevinMiddleIntegrator(275*kelvin, 5/picosecond, 0.002*picosecond)
 
 platform = Platform.getPlatformByName('CUDA')
 
