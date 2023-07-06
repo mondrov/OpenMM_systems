@@ -10,7 +10,7 @@ if __name__ == "__main__":
     from sys import argv
     outfile = argv[1]
     trajfile = argv[2]
-    reffile = argv[3]
+    reffile = "reference_chignolin.pdb"
 
     traj = md.load(trajfile)
     ref = md.load(reffile)
