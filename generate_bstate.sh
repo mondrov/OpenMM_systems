@@ -9,7 +9,7 @@ prmtop = app.AmberPrmtopFile('common_files/chignolin.prmtop')
 system = prmtop.createSystem(nonbondedMethod=app.NoCutoff, constraints=app.HBonds, implicitSolvent=app.HCT)
 
 # Load the PDB file
-pdb = app.PDBFile('chignolin_b.pdb')
+pdb = app.PDBFile('bstate_chignolin.pdb')
 
 # Create the OpenMM Simulation with the positions
 integrator = LangevinMiddleIntegrator(275*kelvin,5/picosecond,.002*picoseconds)
