@@ -10,7 +10,7 @@ fi
 #export CUDA_VISIBLE_DEVICES=$actual_gid
 
 # Run the dynamics with OpenMM
-python $WEST_SIM_ROOT/common_files/memb_prod.py
+python $WEST_SIM_ROOT/common_files/protein_prod.py
 
 #Calculate pcoord with MDTraj
 python $WEST_SIM_ROOT/common_files/get_RMSD.py RMSD.dat seg.h5
