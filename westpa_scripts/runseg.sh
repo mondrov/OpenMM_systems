@@ -16,10 +16,10 @@ python $WEST_SIM_ROOT/common_files/protein_prod.py
 python $WEST_SIM_ROOT/common_files/get_RMSD.py RMSD.dat seg.h5
 cat RMSD.dat > $WEST_PCOORD_RETURN
 
-# cp bstate.pdb $WEST_TRAJECTORY_RETURN
+# cp bstate_chignolin.pdb $WEST_TRAJECTORY_RETURN
 cp seg.h5 $WEST_TRAJECTORY_RETURN
 
-cp bstate.pdb $WEST_RESTART_RETURN
+cp bstate_chignolin.pdb $WEST_RESTART_RETURN
 cp system.xml $WEST_RESTART_RETURN
 cp seg.xml $WEST_RESTART_RETURN/parent.xml
 
