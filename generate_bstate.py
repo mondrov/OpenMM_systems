@@ -1,26 +1,29 @@
 from openmm import XmlSerializer, LangevinMiddleIntegrator
-from openmm.app import Simulation, PDBFile, AmberPrmtopFile
+from openmm.app import Simulation, PDBFile, AmberPrmtopFile, AmberInpcrdFile
 from openmm.app import HBonds, NoCutoff, HCT
 from openmm.unit import kelvin, picosecond
 import os
 
 # Load the Amber files
 prmtop = AmberPrmtopFile('common_files/chignolin.prmtop')
+inpcrd = AmberInpcrdFile('bstates/bstate.rst')
 
 # Create the OpenMM System
 system = prmtop.createSystem(nonbondedMethod=NoCutoff, constraints=HBonds, implicitSolvent=HCT)
 
-# Load the PDB file
-pdb = PDBFile('bstate_chignolin.pdb')
-
-# Create the OpenMM Simulation with the positions
+# Create the OpenMM Simulation with the positions and velocities
 integrator = LangevinMiddleIntegrator(275*kelvin,5/picosecond,.002*picosecond)
-simulation = Simulation(pdb.topology,system,integrator)
-simulation.context.setPositions(pdb.positions)
+simulation = Simulation(prmtop.topology,system,integrator)
+simulation.context.setPositions(inpcrd.positions)
+simulation.context.setVelocities(inpcrd.velocities)
 
-# Serialize the System to XML
-omm_sys_serialized = XmlSerializer.serialize(system)
+# Get the current state with positions and velocities
+state = simulation.context.getState(getPositions=True, getVelocities=True)
 
-# Save the serialized System to a file in the bstates directory
+# Serialize the State to XML
+state_serialized = XmlSerializer.serialize(state)
+
+# Save the serialized State to a file
 with open('bstates/bstate.xml', 'w') as f:
-    f.write(omm_sys_serialized)
+    f.write(state_serialized)
+
