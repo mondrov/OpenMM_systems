@@ -2,7 +2,6 @@
 
 # Set up simulation environment
 source env.sh
-#python generate_bstate.py
 
 # Clean up from previous/ failed runs
 rm -rf traj_segs seg_logs istates west.h5 
