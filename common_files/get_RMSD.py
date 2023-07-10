@@ -15,7 +15,8 @@ if __name__ == "__main__":
     traj = md.load(trajfile)
     ref = md.load(reffile)
     rmsds = compute_rmsd(traj, ref)
-    np.savetxt(outfile, rmsds)
+    np.savetxt(outfile, [rmsds[0],rmsds[-1]])
+
 
 
 
